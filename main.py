@@ -15,24 +15,24 @@ from tensorflow.keras.models import Sequential
 class_names = ['feuille','pierre','ciseaux']
 
 
-model = keras.models.load_model('CHEMIN DU MODEL')
+model = keras.models.load_model('CHEMIN DU MODEL/sequential_model')
 
 
 cap = cv.VideoCapture(0)
-pred_list = np.array([])
+
 while(True):
-    # Capture image par imaghe
+    # Capture image par image
     ret, img = cap.read()
     img = cv.flip(img,1)
     cv.rectangle(img, (375,75), (600,300), (0,255,0))
     rect = img[75+2:300-2,375+2:600-2]
  
-    #X_img = PIL.Image.fromarray(rect)    
+    #Redimmension de l'image  
     rect = keras.preprocessing.image.smart_resize(
         rect, (64,64), interpolation='bilinear'
     )
     img_array = keras.preprocessing.image.img_to_array(rect)
-    img_array = tf.expand_dims(img_array, 0) # Create a batch
+    img_array = tf.expand_dims(img_array, 0) 
     
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])    
